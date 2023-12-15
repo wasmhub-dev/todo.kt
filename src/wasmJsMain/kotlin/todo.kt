@@ -1,7 +1,8 @@
+import kotlinx.browser.document
+import kotlinx.browser.window
 import org.w3c.dom.*
 
-class TodoApp(private val window: Window) {
-    private val document: Document = window.document
+class TodoApp {
     private val inputBox: HTMLInputElement = document.getElementById("input-box") as HTMLInputElement
     private val button: HTMLButtonElement = document.querySelector("button") as HTMLButtonElement
     private val list: HTMLUListElement = document.getElementById("list-container") as HTMLUListElement
@@ -23,9 +24,9 @@ class TodoApp(private val window: Window) {
         }
     }
 
-    private fun createTaskHtml(task: String): String {
+    private fun createTaskHtml(task: String, completed: Boolean): String {
         return """
-            <li>
+            <li class="${if (completed) "checked" else ""}">
                 $task
                 <span>&times;</span>
             </li>
@@ -34,10 +35,10 @@ class TodoApp(private val window: Window) {
 
     private fun addTask() {
         if (this.inputBox.value.isEmpty()) {
-            this.window.alert("Please enter a task!")
+            window.alert("Please enter a task!")
         } else {
             val taskName = this.inputBox.value;
-            this.list.insertAdjacentHTML("beforeend", this.createTaskHtml(taskName));
+            this.list.insertAdjacentHTML("beforeend", this.createTaskHtml(taskName, false));
             this.inputBox.value = ""
             this.saveData()
         }
