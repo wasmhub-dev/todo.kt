@@ -3,20 +3,20 @@ import kotlinx.browser.window
 import org.w3c.dom.*
 
 class TodoApp {
-    private val inputBox: HTMLInputElement = document.getElementById("input-box") as HTMLInputElement
-    private val button: HTMLButtonElement = document.querySelector("button") as HTMLButtonElement
-    private val list: HTMLUListElement = document.getElementById("list-container") as HTMLUListElement
+    private val inputBox = document.getElementById("input-box") as HTMLInputElement
+    private val button = document.querySelector("button") as HTMLButtonElement
+    private val list = document.getElementById("list-container") as HTMLUListElement
 
     init {
         list.addEventListener("click") { event ->
             val target = event.target as HTMLElement
-            if (target.tagName == "LI") {
-                target.classList.toggle("checked")
-                this.saveData()
-            } else if (target.tagName == "SPAN") {
-                target.parentElement?.remove()
-                this.saveData()
+
+            when (target.tagName) {
+                "LI" -> target.classList.toggle("checked")
+                "SPAN" -> target.parentElement?.remove()
             }
+
+            this.saveData()
         }
 
         button.addEventListener("click") {
